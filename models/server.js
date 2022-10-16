@@ -11,11 +11,11 @@ class Server {
        
         this.paths = {
             auth: '/api/auth',
-          
-            user: '/usuarios',
+            teacher: '/api/teacher',
+            user: '/api/usuarios',
             uploads: '/api/uploads',
-            student: '/api/students'
-           
+            student: '/api/students',
+            documentType: '/api/documentType'
         }
         //Conect to DB
         this.conectarDB();
@@ -57,6 +57,8 @@ class Server {
         this.app.use( this.paths.user, require('../routes/usuarios'));
         this.app.use( this.paths.uploads, require('../routes/uploads'));
         this.app.use( this.paths.student, require('../routes/student'));
+        this.app.use( this.paths.teacher, require('../routes/teacher'));
+        this.app.use( this.paths.documentType, require('../routes/documentType'));
     }
 
    

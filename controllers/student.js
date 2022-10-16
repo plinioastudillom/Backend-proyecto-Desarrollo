@@ -17,11 +17,22 @@ const studentsGet = async (req = request, res = response) => {
     });
 }
 
+
+const getStudent = async (req, res = response) => {
+
+    const { id } = req.params;
+    const student = await Student.findById(id)
+        .populate('user', 'name')
+
+
+    res.json(student);
+
+}
 const studentPost = async (req, res = response) => {
-    const { status, ...body } = req.body;
+    const { status, user, ...body } = req.body;
     const data = {
-        ...body
-       
+        ...body,
+        user: req.user._id
     }
     const studentDB = new Student( data );
     // save DB
@@ -46,5 +57,6 @@ const studentDelete = async (req, res = response) => {
 module.exports = {
     studentPost,
     studentsGet,
-    studentDelete
+    studentDelete,
+    getStudent
 }

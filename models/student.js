@@ -20,6 +20,11 @@ const StudentSchema = Schema({
       type: Boolean,
       default: true
     },
+    teacher: {
+      type: Schema.Types.ObjectId,
+      ref: 'Teacher',
+      required: true
+    },
     user: {
         type: Schema.Types.ObjectId,
         ref: 'User',
