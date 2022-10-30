@@ -10,11 +10,18 @@ const { usuariosGet,
     teacherGet,
     teacherPost,
     teacherPut,
-    teacherDelete } = require('../controllers/teacher');
+    teacherDelete, getTeacher } = require('../controllers/teacher');
 
 const router = Router();
 
 router.get('/', teacherGet );
+
+router.get('/:id', [
+    validateJWT,
+    //isAdminRole,
+    check('id', 'No es un ID valido').isMongoId(),
+    validateField   
+], getTeacher )
 
 router.put('/:id', [
     check('id', 'No es un ID valido').isMongoId(),

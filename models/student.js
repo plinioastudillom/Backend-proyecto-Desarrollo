@@ -8,14 +8,6 @@ const StudentSchema = Schema({
         type: String,
         required: [true, 'El apellido es requerido']
     },
-    schoolGrade: {
-        type: Number,
-        required: [true, 'El grado es requerido']
-    },
-    img: {
-      type: String,
-      required: [true, 'El certificado es requerido']
-    },
     status: {
       type: Boolean,
       default: true

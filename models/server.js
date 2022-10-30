@@ -15,7 +15,8 @@ class Server {
             user: '/api/usuarios',
             uploads: '/api/uploads',
             student: '/api/students',
-            documentType: '/api/documentType'
+            documentType: '/api/documentType',
+            studentDocuments: '/api/studentDocuments'
         }
         //Conect to DB
         this.conectarDB();
@@ -59,6 +60,7 @@ class Server {
         this.app.use( this.paths.student, require('../routes/student'));
         this.app.use( this.paths.teacher, require('../routes/teacher'));
         this.app.use( this.paths.documentType, require('../routes/documentType'));
+        this.app.use( this.paths.studentDocuments, require('../routes/studentDocument'));
     }
 
    

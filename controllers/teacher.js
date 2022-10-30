@@ -18,6 +18,13 @@ const teacherGet = async (req = request, res = response) => {
     });
 }
 
+const getTeacher = async (req, res = response) => {
+    const { id } = req.params;
+    const teacher = await Teacher.findById(id)
+        .populate('user', 'name');
+    res.json(teacher);
+}
+
 const teacherPost = async (req, res = response) => {
     const { name, assignedSchoolGrade, birth } = req.body;
     const teacher = new Teacher({ name, assignedSchoolGrade, birth });
@@ -60,4 +67,5 @@ module.exports = {
     teacherPost,
     teacherPut,
     teacherDelete,
+    getTeacher
 }

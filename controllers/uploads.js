@@ -6,12 +6,10 @@ const fs   = require('fs');
 const { response } = require('express');
 const { subirArchivo } = require('../helpers');
 
-const { Student } = require('../models');
+const { StudentDocument } = require('../models');
 
 
 const cargarArchivo = async(req, res = response) => {
-
-
     try {
         
         // txt, md
@@ -42,10 +40,6 @@ const actualizarImagen = async(req, res = response ) => {
             }
         
         break;
-
-        
- 
-    
         default:
             return res.status(500).json({ msg: 'Se me olvidó validar esto'});
     }
@@ -71,6 +65,25 @@ const actualizarImagen = async(req, res = response ) => {
 
 }
 
+const eliminarImagen= async (req, res = response ) => {
+    try {
+        const { id, coleccion, imageName } = req.params;
+        console.log(id);
+        const pathImagen = path.join( __dirname, '../uploads', coleccion, imageName);
+        const query = { documentName: imageName };
+        const delDoc = await StudentDocument.findOneAndDelete( query );
+        if ( fs.existsSync( pathImagen ) ) {
+            fs.unlinkSync( pathImagen );
+        
+        }
+       res.status(200).json({ msg:"Eliminado" });
+
+    } catch (msg) {
+        res.status(500).json({ msg });
+    }
+    
+}
+
 
 
 
@@ -80,27 +93,27 @@ const mostrarImagen = async(req, res = response ) => {
 
     let modelo;
 
-    switch ( coleccion ) {
-        case 'students':
-            modelo = await Student.findById(id);
-            if ( !modelo ) {
-                return res.status(400).json({
-                    msg: `No existe un estudiante con el id ${ id }`
-                });
-            }
+    // switch ( coleccion ) {
+    //     case 'students':
+    //         modelo = await Student.findById(id);
+    //         if ( !modelo ) {
+    //             return res.status(400).json({
+    //                 msg: `No existe un estudiante con el id ${ id }`
+    //             });
+    //         }
         
-        break;
+    //     break;
 
     
-        default:
-            return res.status(500).json({ msg: 'Se me olvidó validar esto'});
-    }
+    //     default:
+    //         return res.status(500).json({ msg: 'Se me olvidó validar esto'});
+    // }
 
 
     // Limpiar imágenes previas
-    if ( modelo.img ) {
+    if ( id ) {
         // Hay que borrar la imagen del servidor
-        const pathImagen = path.join( __dirname, '../uploads', coleccion, modelo.img );
+        const pathImagen = path.join( __dirname, '../uploads', coleccion, id);
         console.log(pathImagen);
         if ( fs.existsSync( pathImagen ) ) {
             return res.sendFile( pathImagen )
@@ -118,5 +131,5 @@ module.exports = {
     cargarArchivo,
     actualizarImagen,
     mostrarImagen,
-    
+    eliminarImagen
 }

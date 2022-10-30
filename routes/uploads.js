@@ -2,7 +2,7 @@ const { Router } = require('express');
 const { check } = require('express-validator');
 
 const { validateField, validarArchivoSubir } = require('../middlewares');
-const { cargarArchivo, actualizarImagen, mostrarImagen } = require('../controllers/uploads');
+const { cargarArchivo, actualizarImagen, mostrarImagen, eliminarImagen } = require('../controllers/uploads');
 const { coleccionesPermitidas } = require('../helpers');
 
 
@@ -20,10 +20,16 @@ router.post( '/', validarArchivoSubir, cargarArchivo );
 // ], actualizarImagen )
 
 router.get('/:coleccion/:id', [
-    check('id','El id debe de ser de mongo').isMongoId(),
+    // check('id','El id debe de ser de mongo').isMongoId(),
     check('coleccion').custom( c => coleccionesPermitidas( c, ['students'] ) ),
     validateField
-], mostrarImagen  )
+], mostrarImagen  );
+
+router.delete('/:coleccion/:id/:imageName', [
+    // check('id','El id debe de ser de mongo').isMongoId(),
+    check('coleccion').custom( c => coleccionesPermitidas( c, ['students'] ) ),
+    validateField
+], eliminarImagen  )
 
 
 

@@ -8,7 +8,7 @@ const {
     isAdminRole
 } = require('../middlewares');
 
-const {studentPost, studentsGet, studentDelete, getStudent } = require('../controllers/student');
+const {studentPost, studentsGet, studentDelete, getStudent, studentPut } = require('../controllers/student');
 
 const router = Router();
 
@@ -17,11 +17,19 @@ router.get('/', [validateJWT], studentsGet );
 router.post('/', [
     validateJWT,
     check('name', 'El nombre es obligatorio').not().isEmpty(),
-    check('lastname', 'El password deber de ser mas de 6 caracteres').not().isEmpty(),
-    check('schoolGrade', 'El correo no es valido').not().isEmpty(),
+    check('lastname', 'El apellido es requerido').not().isEmpty(),
+    
     //check('img', 'imagen es obligatoria').not().isEmpty(),
     validateField
 ], studentPost );
+
+router.put('/:id', [
+    validateJWT,
+    check('id', 'No es un ID valido').isMongoId(),
+    check('name', 'El nombre es obligatorio').not().isEmpty(),
+    check('lastname', 'El apellido es requerido').not().isEmpty(),
+    validateField
+], studentPut );
 
 router.get('/:id', [
     validateJWT,

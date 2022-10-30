@@ -7,7 +7,7 @@ const TeacherSchema = Schema({
     assignedSchoolGrade: {
       type: String,
       required: [true, 'El grado es requerido'],
-      unique: true
+     
     },
     birth:{
         type: Date,

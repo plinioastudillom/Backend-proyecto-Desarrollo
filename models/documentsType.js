@@ -20,7 +20,8 @@ const DocumentType = Schema({
 
 
 DocumentType.methods.toJSON = function() {
-    const { __v, status, ...data  } = this.toObject();
+    const { __v, status, _id, ...data  } = this.toObject();
+    data.uid = _id;
     return data;
 }
 

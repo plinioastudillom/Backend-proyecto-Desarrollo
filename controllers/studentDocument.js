@@ -1,7 +1,7 @@
 const { response } = require('express');
-const { DocumentType } = require('../models')
+const { StudentDocument } = require('../models')
 
-const getStudentDocument =  async(req, res = response ) => {
+const getStudentDocuments =  async(req, res = response ) => {
 
     const query = { status: true };
 
@@ -12,7 +12,14 @@ const getStudentDocument =  async(req, res = response ) => {
     res.json({
         studentDocuments
     })
+}
 
+const getStudentDocument = async (req, res = response) => {
+    const { id } = req.params;
+    const query = { studenId: id };
+    const student = await StudentDocument.find(query)
+        .populate('user', 'name').populate('documentId', 'name');
+    res.json(student);
 }
 
 const studentDocumentPost = async(req, res = response) => {
@@ -31,5 +38,6 @@ const studentDocumentPost = async(req, res = response) => {
 
 module.exports = {
     studentDocumentPost, 
+    getStudentDocuments,
     getStudentDocument
 }
