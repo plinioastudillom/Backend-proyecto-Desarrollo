@@ -8,7 +8,8 @@ const studentsGet = async (req = request, res = response) => {
     const [total, students ] = await Promise.all([
         Student.countDocuments(query),
         Student.find(query)
-            .skip(Number(from)).populate('teacher')
+            .skip(Number(from)).populate('teacher', 'name assignedSchoolGrade').populate('documents.documentId', 'name')
+            .select('lastname name teacher _id  ')
             //.limit(Number(limit))
     ]);
     res.json({
@@ -21,7 +22,7 @@ const studentsGet = async (req = request, res = response) => {
 const getStudent = async (req, res = response) => {
     const { id } = req.params;
     const student = await Student.findById(id)
-        .populate('user', 'name').populate('teacher', '_id');
+        .populate('user', 'name').populate('teacher', '_id').populate('documents.documentId');
     res.json(student);
 }
 
@@ -42,7 +43,7 @@ const studentPut = async (req, res = response) => {
 
     const { id } = req.params;
     const { _id,  ...rest } = req.body;
-    const student = await Student.findByIdAndUpdate( id, rest );
+    const student = await Student.updateMany( {_id: id}, {$set: rest} );
     res.status(201).json({
         student
     });

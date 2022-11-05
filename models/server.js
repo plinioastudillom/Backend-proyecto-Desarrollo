@@ -39,7 +39,8 @@ class Server {
         this.app.use( cors() );
 
         // Lectura y parseo del body
-        this.app.use( express.json() );
+        this.app.use( express.json({limit: '50mb'}) );
+        
 
         // Directorio Público
         this.app.use( express.static('public') );

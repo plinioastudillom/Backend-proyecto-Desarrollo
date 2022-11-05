@@ -17,6 +17,20 @@ const StudentSchema = Schema({
       ref: 'Teacher',
       required: true
     },
+    documents: [
+      {
+        documentId: {
+          type: Schema.Types.ObjectId,
+          ref: 'DocumentType',
+        
+        },
+        student_doc: String,
+        extension : {
+          type: String,
+          
+        }
+      }
+    ],
     user: {
         type: Schema.Types.ObjectId,
         ref: 'User',
