@@ -1,20 +1,22 @@
 const { response, request } = require('express');
 const Student = require('../models/student');
-
+const { DocumentType } = require('../models')
 const studentsGet = async (req = request, res = response) => {
     const { limit = 5, from } = req.query;
     const query = { status: true };
     
-    const [total, students ] = await Promise.all([
+    const [total, students, typeDocuments ] = await Promise.all([
         Student.countDocuments(query),
         Student.find(query)
             .skip(Number(from)).populate('teacher', 'name assignedSchoolGrade').populate('documents.documentId', 'name')
-            .select('lastname name teacher _id  ')
+            .select('lastname name teacher _id  '),
+        DocumentType.find(query)
             //.limit(Number(limit))
     ]);
     res.json({
         total,
-        students
+        students, 
+        typeDocuments
     });
 }
 
